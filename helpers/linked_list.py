@@ -5,13 +5,15 @@ class Node:
         self.next = None
 
     def __str__(self):
-        # s = ''
         # current = self.head
+        # ret = ''
         # while current:
-        #     s += str(current.data) + " -> "
+        #     print(current.data, end=" -> ")
+        #     ret += str(current.data) + ' -> '
         #     current = current.next
-        # s += 'None'
-        # return s
+
+        # ret += "None"
+        # return ret
         return str(self.data)
 
     def insert_start(self, data):
@@ -24,7 +26,13 @@ class Node:
 
     def insert_end(self, data):
         new_node = Node(data)
+
+        if not self.head:
+            self.head = new_node
+            return
+
         current_node = self.head
+
         while current_node.next:
             current_node = current_node.next
 
@@ -47,6 +55,8 @@ class Node:
 
             current_node = current_node.next
 
+
+
     # def kth_to_last(self, k):
     #     current = self.head
     #     # No elements or invalid k - early return
@@ -56,3 +66,10 @@ class Node:
     #     count = 1
     #
     #     while current:
+
+def print_list(head):
+    current = head
+    while current:
+        print(current.data, end=" -> ")
+        current = current.next
+    print("None")
