@@ -1,25 +1,44 @@
+from helpers.linked_list import Node, print_list
+
 def partition_list(head, partition):
-    # First found the partition exists in the list
-    pivot = head
-    pivot_pos = 0
-    while pivot:
-        if pivot.data != partition:
-            pivot = pivot.next
-            pivot_pos += 1
+    before_head = Node(0)
+    after_head = Node(0)
 
-    # If not found return None
-    if not pivot:
-        return None
+    before = before_head
+    after = after_head
 
-    iterator = head
-    curr_pos = 0
+    current = head
 
-    # pivot_pos = 1
-    # 3 - 5 (pivot) - 8 - 5 - 10 - 2 - 3 - None
+    while current:
+        next_node = current.next
+        current.next = None
+        if current.data < partition:
+            before.next = current
+            before = before.next
+        else:
+            after.next = current
+            after = after.next
 
-    while iterator:
-        if iterator.data < pivot.data and curr_pos > pivot_pos:
-            
+        current = next_node
 
-        curr_pos += 1
-        iterator = iterator.next
+    before.next = after_head.next
+
+    return before_head.next
+
+
+if __name__ == "__main__":
+    # Building the list: 3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1 -> None
+    linked_list = Node(3)
+    linked_list.head = linked_list
+    linked_list.insert_end(5)
+    linked_list.insert_end(8)
+    linked_list.insert_end(5)
+    linked_list.insert_end(10)
+    linked_list.insert_end(2)
+    linked_list.insert_end(1)
+
+    print_list(linked_list)
+
+    partition_list(linked_list, 5)
+
+    print_list(linked_list)
