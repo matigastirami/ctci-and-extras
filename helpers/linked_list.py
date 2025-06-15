@@ -16,6 +16,16 @@ class Node:
         # return ret
         return str(self.data)
 
+    def __eq__(self, other):
+        if not isinstance(other, Node):
+            return NotImplemented
+        a, b = self, other
+        while a and b:
+            if a.data != b.data:
+                return False
+            a, b = a.next, b.next
+        return a is None and b is None
+
     def insert_start(self, data):
         new_node = Node(data)
         if not self.head:
@@ -69,7 +79,10 @@ class Node:
 
 def print_list(head):
     current = head
+    result = ""
     while current:
-        print(current.data, end=" -> ")
+        result += str(current.data) + " -> "
         current = current.next
-    print("None")
+
+    result += "None"
+    return result
