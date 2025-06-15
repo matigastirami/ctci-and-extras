@@ -1,167 +1,119 @@
-class Connect4 {
-  // grid
-  // player
-  // winner (player)
-  // play
-  // checkWinner
-  // print
-  constructor() {
-    this.grid = Array.from({ length: 6 }, (x) => (x = new Array(7).fill(0)));
-    this.player = 1;
-  }
+function Connect4(movements = []) {
+  this.grid = Array.from({ length: 6 }, (x) => (x = new Array(7).fill(0)));
+  this.player = 1;
+  this.winner = null;
 
-  play(col) {
+  this.play = function (col) {
     for (let i = this.grid.length - 1; i >= 0; i--) {
       if (this.grid[i][col] === 0) {
         this.grid[i][col] = this.player;
-        this.checkWinner(i, col, this.player);
-        this.player = 3 - this.player;
+        const winner = this.checkWinner(i, col);
+        if (winner) {
+          console.log(`Player ${winner} wins`);
+          this.winner = winner;
+          break;
+        }
+        this.player = this.player === 1 ? 2 : 1;
         break;
       }
     }
-  }
+  };
 
-  checkWinner(row, col, player) {
-    const offset = 3;
-    let count = 0;
-    for (let i = row - offset; i <= row + offset; i++) {
-      if (i < 0 || i >= this.grid.length) continue;
-      if (this.grid[i][col] === player) {
-        count++;
-        if (count === 4) {
-          console.log(`The winner is player ${player}`);
-          this.winner = player;
-          return;
-        }
-      } else {
-        count = 0;
-      }
-    }
-
-    // check horizontal
-    count = 0;
-    for (let j = col - offset; j <= col + offset; j++) {
-      if (this.grid[row][j] === player) {
-        count++;
-        if (count === 4) {
-          console.log(`The winner is player ${player}`);
-          this.winner = player;
-          return;
-        }
-      } else {
-        count = 0;
-      }
-    }
-
-    // check diagonal \
-    count = 0;
-    for (let i = -offset; i <= offset; i++) {
-      const r = row + i;
-      const c = col + i;
-
-      if (r < 0 || r >= this.grid.length || c < 0 || c >= this.grid[0].length)
-        continue;
-
-      if (this.grid[r][c] === player) {
-        count++;
-
-        if (count === 4) {
-          console.log(`The winner is player ${player}`);
-          this.winner = player;
-          return;
-        }
-      } else {
-        count = 0;
-      }
-    }
-
-    // check diagonal /
-    count = 0;
-    for (let i = -offset; i <= offset; i++) {
-      const r = row - i;
-      const c = col + i;
-
-      if (r < 0 || r >= this.grid.length || c < 0 || c >= this.grid[0].length)
-        continue;
-
-      if (this.grid[r][c] === player) {
-        count++;
-
-        if (count === 4) {
-          console.log(`The winner is player ${player}`);
-          this.winner = player;
-          return;
-        }
-      } else {
-        count = 0;
-      }
-    }
-
-    return 0;
-  }
-
-  print() {
+  this.print = function () {
     console.table(this.grid);
+  };
+
+  const checkDirection = function (row, col, dr, dc) {
+    let count = 0;
+    let r = row + dr;
+    let c = col + dc;
+
+    while (
+      r >= 0 &&
+      r < this.grid.length &&
+      c >= 0 &&
+      c < this.grid[0].length &&
+      this.grid[r][c] === this.player
+    ) {
+      count++;
+      r += dr;
+      c += dc;
+    }
+
+    return count;
+  }.bind(this);
+
+  this.checkWinner = function (row, col) {
+    const deltas = [
+      [1, 0],
+      [0, 1],
+      [1, 1],
+      [-1, 1],
+    ];
+
+    for (let [dr, dc] of deltas) {
+      let count = 1;
+      count += checkDirection(row, col, dr, dc);
+      count += checkDirection(row, col, -dr, -dc);
+
+      if (count >= 4) {
+        return this.player;
+      }
+    }
+    return 0;
+  };
+
+  for (let col of movements) {
+    this.play(col);
   }
 }
 
-// keep this function call here
-const game = new Connect4();
-// vertical winner
-// game.print();
-// game.play(1);
-// game.play(2);
-// game.play(1);
-// game.play(2);
-// game.play(1);
-// game.play(2);
-// game.play(1);
-// game.print();
-// console.log(game.checkWinner(1, 1));
+(() => {
+  const tcs = [
+    // 0. Vertical win in leftmost column
+    [0, 1, 0, 1, 0, 1, 0],
 
-// horizontal winner
-// game.play(1);
-// game.play(1);
-// game.play(2);
-// game.play(2);
-// game.play(3);
-// game.play(3);
-// game.play(5);
-// game.play(4);
-// game.play(5);
-// game.play(4);
-// game.print();
+    // 1. Vertical win in rightmost column
+    [6, 5, 6, 5, 6, 5, 6],
 
-// vertical /
-// game.play(0);
-// game.play(1);
-// game.play(1);
-// game.play(2);
-// game.play(3);
-// game.play(2);
-// game.play(2);
-// game.play(3);
-// game.play(3);
-// game.play(4);
-// game.play(3);
-// game.print();
+    // 2. Horizontal win starting from column 3
+    [3, 0, 4, 0, 5, 0, 6],
 
-// vertical \
-game.play(6);
-game.play(5);
-game.play(5);
-game.play(4);
-game.play(4);
-game.play(3);
-game.play(4);
-game.play(3);
-game.play(3);
-game.play(0);
-game.play(3);
-game.print();
+    // 3. Horizontal win starting from column 0
+    [0, 4, 1, 4, 2, 4, 3],
 
-// Input: [3, 4, 3, 4, 3, 4, 3];
-// Output: 1;
+    // 4. Diagonal "\" from bottom-left to top-right
+    [0, 1, 1, 2, 2, 3, 2, 3, 3, 6, 3],
 
-// Input: [3, 4, 3, 4, 3, 4, 2, 4];
-// Output: 2;
+    // 5. ❌ REPLACED (was Player 2 win), now diagonal "/" for Player 1
+    [3, 2, 2, 1, 1, 0, 1, 0, 0, 6, 0],
+
+    // 6. Diagonal "\" near right edge
+    [3, 4, 4, 5, 5, 6, 5, 6, 6, 0, 6],
+
+    // 7. Diagonal "/" near left edge (same as new 5, ok to keep for variety)
+    [3, 2, 2, 1, 1, 0, 1, 0, 0, 6, 0],
+
+    // 8. Full board draw (no winner)
+    [
+      0, 1, 0, 1, 0, 1, 2, 2, 3, 2, 3, 2, 3, 4, 4, 5, 4, 5, 4, 5, 6, 6, 0, 6, 0,
+      6, 0, 1, 1, 2, 1, 2, 1, 2, 3, 3, 4, 3, 4, 3, 4, 5, 5, 6, 5, 6, 5, 6,
+    ],
+
+    // 9. Top row horizontal win for Player 1
+    [0, 1, 0, 1, 0, 1, 0, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1, 3, 1, 3, 1, 3], // Corrected version
+  ];
+
+  for (let i = 0; i < tcs.length; i++) {
+    const game = new Connect4(tcs[i]);
+    game.print();
+    if (i === 8) {
+      console.assert(game.winner === 0, `Test case ${i} should be a draw`);
+    } else {
+      console.assert(
+        game.winner === 1,
+        `Test case ${i} should be won by player 1`,
+      );
+    }
+  }
+})();
