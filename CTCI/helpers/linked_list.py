@@ -26,6 +26,9 @@ class Node:
             a, b = a.next, b.next
         return a is None and b is None
 
+    def __hash__(self) -> int:
+        return id(self) # id is the hash representation of the memory address
+
     def insert_start(self, data):
         new_node = Node(data)
         if not self.head:
@@ -91,4 +94,22 @@ def attach(head: Node, tail: Node) -> Node:
     while curr.next:
         curr = curr.next
     curr.next = tail
+    return head
+
+def create_loop(head: Node, pos: int) -> Node:
+    if not head or pos < 0:
+        return head
+
+    loop_start = head
+    last = head
+    index = 0
+
+    while index < pos and loop_start.next:
+        loop_start = loop_start.next
+        index += 1
+
+    while last.next:
+        last = last.next
+
+    last.next = loop_start
     return head
