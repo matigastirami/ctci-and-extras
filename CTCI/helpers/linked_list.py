@@ -65,18 +65,6 @@ class Node:
 
             current_node = current_node.next
 
-
-
-    # def kth_to_last(self, k):
-    #     current = self.head
-    #     # No elements or invalid k - early return
-    #     if not current or k < 1:
-    #         return None
-    #
-    #     count = 1
-    #
-    #     while current:
-
 def print_list(head):
     current = head
     result = ""
@@ -86,3 +74,12 @@ def print_list(head):
 
     result += "None"
     return result
+
+def generate_list(values = [1, 2, 3, 4, 5]):
+    dummy = Node(-1)
+    current = dummy
+    for val in values:
+        current.next = Node(val)
+        current = current.next
+
+    return dummy.next

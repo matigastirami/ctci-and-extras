@@ -1,4 +1,4 @@
-from helpers.linked_list import Node, print_list
+from CTCI.helpers.linked_list import generate_list, Node, print_list
 
 """
 7 -> 1 -> 6 -> None
@@ -35,15 +35,6 @@ def sum_lists(l1: Node, l2: Node) -> Node:
         result.next = Node(carry)
 
     return sum_list.next
-
-def generate_list(values = [1, 2, 3, 4, 5]):
-    dummy = Node(-1)
-    current = dummy
-    for val in values:
-        current.next = Node(val)
-        current = current.next
-
-    return dummy.next
 
 def test_solution(l1, l2, expected):
     list1 = generate_list(l1)
