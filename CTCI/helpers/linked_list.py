@@ -75,7 +75,7 @@ def print_list(head):
     result += "None"
     return result
 
-def generate_list(values = [1, 2, 3, 4, 5]):
+def generate_list(values = [1, 2, 3, 4, 5]) -> Node:
     dummy = Node(-1)
     current = dummy
     for val in values:
@@ -83,3 +83,12 @@ def generate_list(values = [1, 2, 3, 4, 5]):
         current = current.next
 
     return dummy.next
+
+def attach(head: Node, tail: Node) -> Node:
+    if not head:
+        return tail
+    curr = head
+    while curr.next:
+        curr = curr.next
+    curr.next = tail
+    return head
