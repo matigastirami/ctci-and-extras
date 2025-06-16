@@ -21,9 +21,33 @@ def is_palindrome(s: str) -> bool:
             return False
     return True
 
-def is_list_palindrome(head: Node):
-    string = list_to_str(head)
-    return is_palindrome(string)
+# naive solution using a list to string
+# def is_list_palindrome(head: Node):
+#     string = list_to_str(head)
+#     return is_palindrome(string)
+
+# Bit more sofisticated solution with counter and stack
+def is_list_palindrome(head) -> bool:
+    stack = []
+    total_elems = 0
+    iterator = head
+
+    while iterator:
+        total_elems += 1
+        stack.append(iterator)
+        iterator = iterator.next
+
+    iterator = head
+
+    for i in range(0, total_elems // 2):
+        top = stack.pop()
+        if top.data != iterator.data:
+            return False
+
+        iterator = iterator.next
+
+    return True
+
 
 def test_solution(head: Node, expected):
     assert is_list_palindrome(head) == expected, f"{print_list(head)} returned a wrong value"
