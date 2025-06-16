@@ -29,8 +29,6 @@ def intersection(l1, l2) -> bool:
         longer = longer.next
         shorter = shorter.next
 
-    print(longer, shorter)
-
     return longer is not None and shorter is not None
 
 def test_solution(l1: Node, l2: Node, expected):
@@ -55,7 +53,22 @@ if __name__ == '__main__':
             generate_list([1, 2, 3, 4]),
             generate_list([1, 2, 3, 4]),
             False
-        ]
+        ],
+        [
+            None,
+            generate_list([1, 2, 3, 4]),
+            False
+        ],
+        [
+            generate_list([]),
+            generate_list([1, 2, 3, 4]),
+            False
+        ],
+        [
+            generate_list([]),
+            generate_list([]),
+            False
+        ],
     ]
 
     for l1, l2, expected in data_set:
