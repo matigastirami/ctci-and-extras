@@ -5,6 +5,9 @@ class StackNode:
         self.next = None
 
 class Stack:
+    def __init__(self) -> None:
+        self.top = None
+
     def push(self, data):
         node = StackNode(data)
         node.next = self.top

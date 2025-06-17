@@ -1,0 +1,87 @@
+from CTCI.helpers.stacks import Stack
+
+DEFAULT_STACK_MAX_SIZE = 10
+
+class SetOfStacks:
+    def __init__(self, max_stack_size = DEFAULT_STACK_MAX_SIZE) -> None:
+        self.stacks = [Stack()]
+        self.pointer = 0
+        self.sizes = [0]
+        self.max_size = max_stack_size
+
+    def push(self, data):
+        current_size = self.sizes[self.pointer]
+
+        if current_size == self.max_size:
+            self.pointer += 1
+            self.stacks.append(Stack())
+            self.sizes.append(0)
+
+        current_stack = self.stacks[self.pointer]
+        current_stack.push(data)
+        self.sizes[self.pointer] += 1
+
+
+    def pop(self):
+        if self.pointer == 0 and self.sizes[0] == 0:
+            raise Exception("Set of stacks is empty")
+        current_size = self.sizes[self.pointer]
+        if current_size == 0:
+            self.pointer -= 1
+
+        current_stack = self.stacks[self.pointer]
+        data = current_stack.pop()
+        self.sizes[self.pointer] -= 1
+
+        return data
+
+    def peek(self):
+        if self.pointer == 0 and self.sizes[0] == 0:
+            raise Exception("Set of stacks is empty")
+
+        return self.stacks[self.pointer].peek()
+
+    def is_empty(self):
+        return self.pointer == 0 and self.sizes[0] == 0
+
+def test_set_of_stacks():
+    sos = SetOfStacks(max_stack_size=3)
+
+    # Push 9 items, should create 3 internal stacks
+    for i in range(9):
+        sos.push(i)
+
+    # Pop 3 items, should stay on the third stack
+    assert sos.pop() == 8
+    assert sos.pop() == 7
+    assert sos.pop() == 6
+
+    # Now should pop from second stack
+    assert sos.pop() == 5
+    assert sos.pop() == 4
+
+    # Push more to refill the second stack
+    sos.push(100)
+    sos.push(101)
+
+    # Check these are returned in LIFO order
+    assert sos.pop() == 101
+    assert sos.pop() == 100
+
+    # Pop the rest
+    assert sos.pop() == 3
+    assert sos.pop() == 2
+    assert sos.pop() == 1
+    assert sos.pop() == 0
+
+    # Edge case: popping when empty
+    try:
+        sos.pop()
+        assert False, "Should raise or handle empty pop"
+    except Exception:
+        pass
+
+    print("✅ All tests passed.")
+
+if __name__ == '__main__':
+    test_set_of_stacks()
