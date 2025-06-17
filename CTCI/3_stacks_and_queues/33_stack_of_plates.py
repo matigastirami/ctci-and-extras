@@ -44,6 +44,31 @@ class SetOfStacks:
     def is_empty(self):
         return self.pointer == 0 and self.sizes[0] == 0
 
+    def pop_at(self, at):
+        # TODO: fix this full nodes shift
+        if at >= len(self.stacks):
+            raise Exception("Invalid at value")
+
+        temp_stack = Stack()
+        data = self.stacks[at].pop()
+
+        if at == len(self.stacks) - 1:
+            return data
+
+
+        for i in range(at + 1, len(self.stacks)):
+            curr = self.stacks[i].pop()
+            while curr:
+                temp_stack.push(curr)
+                curr = self.stacks[i].pop()
+
+            from_temp = temp_stack.pop()
+            while from_temp:
+                self.push(from_temp)
+                from_temp = temp_stack.pop()
+
+        return data
+
 def test_set_of_stacks():
     sos = SetOfStacks(max_stack_size=3)
 
@@ -83,5 +108,26 @@ def test_set_of_stacks():
 
     print("✅ All tests passed.")
 
+def test_pop_at():
+    sos = SetOfStacks(max_stack_size=3)
+
+    # Push 10 elements (should create 4 stacks: [0-2], [3-5], [6-8], [9])
+    for i in range(10):
+        sos.push(i)
+
+    # Test pop_at on middle stack (e.g., stack 1)
+    val = sos.pop_at(1)
+    assert val == 5  # LIFO for that sub-stack
+
+    # Pop remaining items and ensure global LIFO is preserved
+    results = []
+    while not sos.is_empty():
+        results.append(sos.pop())
+
+    assert results == [9, 8, 7, 6, 4, 3, 2, 1, 0]  # 5 was removed earlier
+
+    print("✅ pop_at tests passed.")
+
 if __name__ == '__main__':
     test_set_of_stacks()
+    test_pop_at()
