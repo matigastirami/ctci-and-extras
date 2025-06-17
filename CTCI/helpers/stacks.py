@@ -20,7 +20,7 @@ class Stack:
     def peek(self):
         if not self.top:
             return None
-        return top.data
+        return self.top.data
 
     def is_empty(self):
         return self.top is None
