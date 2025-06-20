@@ -1,26 +1,53 @@
 from CTCI.helpers.stacks import Stack
 
+# How would I optimize this:
+# Normally when there are a lot of elements removal will be O(n), so I'd move everything to helper_stack as soon as I receive a read or remove operation (peek, remove, is_empty)
+# and just move everything to the main queue when calling add operation
+
 class MyQueue:
     def __init__(self) -> None:
         self.push_stack = Stack()
         self.helper_stack = Stack()
 
     def add(self, data):
+        if self.helper_stack.is_empty():
+            self.push_stack.push(data)
+            return
+
+        self._helper_to_push_stack()
         self.push_stack.push(data)
 
-    def remove(self):
-        curr = self.push_stack.pop()
-        while curr:
-            self.helper_stack.push(curr)
-            curr = self.push_stack.pop()
-
-        data = self.helper_stack.pop() # Take the first
+    def _helper_to_push_stack(self):
         from_helper = self.helper_stack.pop()
         while from_helper:
             self.push_stack.push(from_helper)
             from_helper = self.helper_stack.pop()
 
+    def _push_to_helper_stack(self):
+        curr = self.push_stack.pop()
+        while curr:
+            self.helper_stack.push(curr)
+            curr = self.push_stack.pop()
+
+    def remove(self):
+        if self.push_stack.is_empty():
+            return self.helper_stack.pop()
+
+        self._push_to_helper_stack()
+        data = self.helper_stack.pop() # Take the first
+        self._helper_to_push_stack()
+
         return data
+
+    def peek(self):
+        if self.push_stack.is_empty():
+            return self.helper_stack.top.data
+
+        self._push_to_helper_stack()
+        data = self.helper_stack.top.data
+
+        return data
+
 
 def test_my_queue():
     q = MyQueue()
