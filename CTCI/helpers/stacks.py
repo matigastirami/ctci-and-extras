@@ -8,6 +8,15 @@ class Stack:
     def __init__(self) -> None:
         self.top = None
 
+    def __str__(self) -> str:
+        curr = self.top
+        string = ''
+        while curr:
+            string += f'{curr.data} ->'
+            curr = curr.next
+        string += 'None'
+        return string
+
     def push(self, data):
         node = StackNode(data)
         node.next = self.top
