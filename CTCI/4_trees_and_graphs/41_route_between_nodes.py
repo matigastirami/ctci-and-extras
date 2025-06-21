@@ -76,7 +76,7 @@ def route_exists(graph: Graph, start: GraphNode, end: GraphNode):
     return False
 
 def test_route_exists():
-    # Setup nodes
+    # Create nodes
     a = GraphNode("A")
     b = GraphNode("B")
     c = GraphNode("C")
@@ -84,26 +84,43 @@ def test_route_exists():
     e = GraphNode("E")
     f = GraphNode("F")
 
-    # Build graph
+    # Create graph structure
     a.adjacent = [b, c]
     b.adjacent = [d]
     c.adjacent = [e]
     e.adjacent = [f]
-    # d, f have no outgoing edges
+    d.adjacent = []  # Leaf
+    f.adjacent = []  # Leaf
 
     graph = Graph()
     graph.nodes.extend([a, b, c, d, e, f])
 
-    # These should return True
-    assert route_exists(graph, a, f) == True   # A -> C -> E -> F
-    assert route_exists(graph, a, d) == True   # A -> B -> D
-    assert route_exists(graph, b, d) == True   # B -> D
-    assert route_exists(graph, c, f) == True   # C -> E -> F
+    # ✅ Positive paths
+    assert route_exists(graph, a, f) == True     # A → C → E → F
+    assert route_exists(graph, a, d) == True     # A → B → D
+    assert route_exists(graph, c, f) == True     # C → E → F
+    assert route_exists(graph, b, d) == True     # B → D
+    assert route_exists(graph, a, a) == True     # Trivial case
 
-    # These should return False
-    assert route_exists(graph, d, a) == False  # D has no edges
-    assert route_exists(graph, e, a) == False  # No reverse edges
-    assert route_exists(graph, f, b) == False  # F is a sink
+    # ❌ Negative paths
+    assert route_exists(graph, d, a) == False    # D has no edges
+    assert route_exists(graph, e, b) == False    # No back path
+    assert route_exists(graph, f, d) == False    # No forward path from F
+    assert route_exists(graph, d, f) == False    # Disconnected
+
+    # 🔁 Cycle detection
+    g = GraphNode("G")
+    h = GraphNode("H")
+    i = GraphNode("I")
+    g.adjacent = [h]
+    h.adjacent = [i]
+    i.adjacent = [g]  # Cycle
+
+    graph.nodes.extend([g, h, i])
+
+    assert route_exists(graph, g, i) == True     # G → H → I
+    assert route_exists(graph, i, g) == True     # I → G (cycle)
+    assert route_exists(graph, h, g) == True     # H → I → G
 
     print("✅ All route_exists tests passed.")
 
