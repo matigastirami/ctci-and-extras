@@ -1,4 +1,4 @@
-from CTCI.helpers.linked_list import Node, generate_list, print_list, attach
+from CTCI.helpers.linked_list import LinkedListNode, generate_list, print_list, attach
 
 
 def intersection(l1, l2) -> bool:
@@ -31,7 +31,7 @@ def intersection(l1, l2) -> bool:
 
     return longer is not None and shorter is not None
 
-def test_solution(l1: Node, l2: Node, expected):
+def test_solution(l1: LinkedListNode, l2: LinkedListNode, expected):
     actual = intersection(l1, l2)
     assert actual == expected, f"Got {actual} for intersection between {print_list(l1)} and {print_list(l2)}, expected {expected}"
 

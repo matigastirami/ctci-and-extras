@@ -1,7 +1,7 @@
-from helpers.linked_list import Node
+from helpers.linked_list import LinkedListNode
 
 if __name__ == "__main__":
-    linked_list = Node(1)
+    linked_list = LinkedListNode(1)
     linked_list.head = linked_list  # Set the head to itself to mimic list behavior
 
     linked_list.insert_end(1)

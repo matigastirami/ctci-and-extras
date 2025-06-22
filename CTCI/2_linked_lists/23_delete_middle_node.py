@@ -1,4 +1,4 @@
-from helpers.linked_list import print_list, Node
+from helpers.linked_list import print_list, LinkedListNode
 
 def delete_middle_node(node_ref):
     # As I don't have the prev node ref, I can't unlink and attach to the next, so the strategy would be copying next data to current and then unlink the next
@@ -10,10 +10,10 @@ def delete_middle_node(node_ref):
 
 if __name__ == "__main__":
     # Create a linked list: 1 -> 2 -> 3 -> 4 -> 5
-    linked_list = Node(1)
+    linked_list = LinkedListNode(1)
     current = linked_list
     for i in range(2, 6):
-        current.next = Node(i)
+        current.next = LinkedListNode(i)
         current = current.next
 
     print("Original list:")

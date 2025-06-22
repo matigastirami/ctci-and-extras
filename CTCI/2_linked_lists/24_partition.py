@@ -1,8 +1,8 @@
-from helpers.linked_list import Node, print_list
+from helpers.linked_list import LinkedListNode, print_list
 
 def partition_list(head, partition):
-    before_head = Node(0)
-    after_head = Node(0)
+    before_head = LinkedListNode(0)
+    after_head = LinkedListNode(0)
 
     before = before_head
     after = after_head
@@ -28,7 +28,7 @@ def partition_list(head, partition):
 
 if __name__ == "__main__":
     # Building the list: 3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1 -> None
-    linked_list = Node(3)
+    linked_list = LinkedListNode(3)
     linked_list.head = linked_list
     linked_list.insert_end(5)
     linked_list.insert_end(8)

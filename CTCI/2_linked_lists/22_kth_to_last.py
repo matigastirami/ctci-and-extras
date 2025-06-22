@@ -1,5 +1,5 @@
 # Approach: First count the total elements, then iterate until total - k
-from helpers.linked_list import Node
+from helpers.linked_list import LinkedListNode
 
 def kth_to_last(head, k):
     curr = head
@@ -25,7 +25,7 @@ def print_kth_to_last(head, k):
 
 if __name__ == "__main__":
     # Building the list: 10 -> 20 -> 30 -> 40 -> 50
-    linked_list = Node(10)
+    linked_list = LinkedListNode(10)
     linked_list.head = linked_list
     linked_list.insert_end(20)
     linked_list.insert_end(30)

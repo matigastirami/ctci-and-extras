@@ -4,9 +4,9 @@
 # 2. Use a stack and a counter, the stack pull with provide the latest, while iterating from the beginning of the list again
 #
 
-from CTCI.helpers.linked_list import Node, generate_list, print_list
+from CTCI.helpers.linked_list import LinkedListNode, generate_list, print_list
 
-def list_to_str(head: Node) -> str:
+def list_to_str(head: LinkedListNode) -> str:
     resp = ""
     iterator = head
     while iterator:
@@ -49,7 +49,7 @@ def is_list_palindrome(head) -> bool:
     return True
 
 
-def test_solution(head: Node, expected):
+def test_solution(head: LinkedListNode, expected):
     assert is_list_palindrome(head) == expected, f"{print_list(head)} returned a wrong value"
 
 if __name__ == '__main__':

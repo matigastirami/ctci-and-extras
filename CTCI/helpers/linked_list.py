@@ -1,4 +1,4 @@
-class Node:
+class LinkedListNode:
     def __init__(self, data):
         self.head = None
         self.data = data
@@ -17,7 +17,7 @@ class Node:
         return str(self.data)
 
     def __eq__(self, other):
-        if not isinstance(other, Node):
+        if not isinstance(other, LinkedListNode):
             return NotImplemented
         a, b = self, other
         while a and b:
@@ -30,7 +30,7 @@ class Node:
         return id(self) # id is the hash representation of the memory address
 
     def insert_start(self, data):
-        new_node = Node(data)
+        new_node = LinkedListNode(data)
         if not self.head:
             self.head
         else:
@@ -38,7 +38,7 @@ class Node:
             self.head = new_node
 
     def insert_end(self, data):
-        new_node = Node(data)
+        new_node = LinkedListNode(data)
 
         if not self.head:
             self.head = new_node
@@ -78,16 +78,16 @@ def print_list(head):
     result += "None"
     return result
 
-def generate_list(values = [1, 2, 3, 4, 5]) -> Node:
-    dummy = Node(-1)
+def generate_list(values = [1, 2, 3, 4, 5]) -> LinkedListNode:
+    dummy = LinkedListNode(-1)
     current = dummy
     for val in values:
-        current.next = Node(val)
+        current.next = LinkedListNode(val)
         current = current.next
 
     return dummy.next
 
-def attach(head: Node, tail: Node) -> Node:
+def attach(head: LinkedListNode, tail: LinkedListNode) -> LinkedListNode:
     if not head:
         return tail
     curr = head
@@ -96,7 +96,7 @@ def attach(head: Node, tail: Node) -> Node:
     curr.next = tail
     return head
 
-def create_loop(head: Node, pos: int) -> Node:
+def create_loop(head: LinkedListNode, pos: int) -> LinkedListNode:
     if not head or pos < 0:
         return head
 

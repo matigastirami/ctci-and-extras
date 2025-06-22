@@ -2,7 +2,7 @@
 # approach #2: fast and slow pointer
 
 from typing import Optional
-from CTCI.helpers.linked_list import Node, generate_list
+from CTCI.helpers.linked_list import LinkedListNode, generate_list
 from CTCI.helpers.linked_list import create_loop
 
 
@@ -16,7 +16,7 @@ from CTCI.helpers.linked_list import create_loop
 #         curr = curr.next
 #     return None
 
-def detect_loop(head: Node) -> Optional[Node]:
+def detect_loop(head: LinkedListNode) -> Optional[LinkedListNode]:
     if not head:
         return None
 

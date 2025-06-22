@@ -1,4 +1,4 @@
-from CTCI.helpers.linked_list import generate_list, Node, print_list
+from CTCI.helpers.linked_list import generate_list, LinkedListNode, print_list
 
 """
 7 -> 1 -> 6 -> None
@@ -10,8 +10,8 @@ result = 2 -> 1 -> 9 -> None,
 6 + 2 + carry = 9 -> 9 < 10 -> carry = 0 && result.data = sum
 """
 
-def sum_lists(l1: Node, l2: Node) -> Node:
-    sum_list = Node(-1)
+def sum_lists(l1: LinkedListNode, l2: LinkedListNode) -> LinkedListNode:
+    sum_list = LinkedListNode(-1)
     result = sum_list
     carry = 0
 
@@ -21,10 +21,10 @@ def sum_lists(l1: Node, l2: Node) -> Node:
         sum = val1 + val2 + carry
 
         if sum > 9:
-            result.next = Node(sum - 10)
+            result.next = LinkedListNode(sum - 10)
             carry = 1
         else:
-            result.next = Node(sum)
+            result.next = LinkedListNode(sum)
             carry = 0
 
         l1 = l1.next if l1 else None
@@ -32,7 +32,7 @@ def sum_lists(l1: Node, l2: Node) -> Node:
         result = result.next
 
     if carry:
-        result.next = Node(carry)
+        result.next = LinkedListNode(carry)
 
     return sum_list.next
 
