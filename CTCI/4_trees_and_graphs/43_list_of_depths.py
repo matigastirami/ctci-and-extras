@@ -13,16 +13,17 @@ def list_of_depths(root: TreeNode):
     while not queue.is_empty():
         elem = queue.pop()
         curr_level = elem["level"]
+        node = elem["node"]
 
         if not str(curr_level) in lists:
-            lists[str(curr_level)] = LinkedListNode(elem["node"])
+            lists[str(curr_level)] = LinkedListNode(node)
         else:
-            lists[str(curr_level)].insert_end(elem["node"])
+            lists[str(curr_level)] = lists[str(curr_level)].insert_end(node)
 
-        if elem['node'].left is not None:
-            queue.push({"node": elem['node'].left, "level": elem["level"] + 1})
-        if elem['node'].right is not None:
-            queue.push({"node": elem['node'].right, "level": elem["level"] + 1})
+        if node.left is not None:
+            queue.push({"node": node.left, "level": curr_level + 1})
+        if node.right is not None:
+            queue.push({"node": node.right, "level": curr_level + 1})
 
     return lists
 
@@ -32,7 +33,7 @@ def collect_levels_as_lists(levels: dict) -> dict:
     for level, node in levels.items():
         result[level] = []
         while node:
-            result[level].append(node.data)  # assuming node.data is a TreeNode
+            result[level].append(node.data.data)  # assuming node.data is a TreeNode
             node = node.next
     return result
 

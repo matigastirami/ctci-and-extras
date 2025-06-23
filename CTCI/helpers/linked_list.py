@@ -1,6 +1,5 @@
 class LinkedListNode:
     def __init__(self, data):
-        self.head = None
         self.data = data
         self.next = None
 
@@ -14,6 +13,9 @@ class LinkedListNode:
 
         # ret += "None"
         # return ret
+        return str(self.data)
+
+    def __repr__(self) -> str:
         return str(self.data)
 
     def __eq__(self, other):
@@ -39,17 +41,11 @@ class LinkedListNode:
 
     def insert_end(self, data):
         new_node = LinkedListNode(data)
-
-        if not self.head:
-            self.head = new_node
-            return
-
-        current_node = self.head
-
+        current_node = self
         while current_node.next:
             current_node = current_node.next
-
         current_node.next = new_node
+        return self
 
     def remove_at_position(self, position):
         pass
