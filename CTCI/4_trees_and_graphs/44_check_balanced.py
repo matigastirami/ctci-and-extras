@@ -39,34 +39,31 @@ from shutil import posix
 #     return balanced
 
 # Non-recursive solution using BFS
-def height(root: TreeNode) -> int:
-    if root is None:
-        return 0
-
-    max_h = 0
-    queue = []
-    queue.append({"node": root, "h": 1})
-
-    while len(queue) > 0:
-        elem = queue.pop()
-        node = elem["node"]
-        h = elem["h"]
-        max_h = max(h, max_h)
-
-        if node.left:
-            queue.append({"node": node.left, "h": h + 1})
-        if node.right:
-            queue.append({"node": node.right, "h": h + 1})
-
-    return max_h
-
 def is_balanced(root: TreeNode) -> bool:
     if root is None:
         return True
 
-    lh = height(root.left)
-    rh = height(root.right)
-    return abs(lh - rh) <= 1
+    stack = [root]
+    heights = {}
+    visited = set()
+
+    while stack:
+        node = stack[-1]
+        if node.left and node.left not in visited:
+            stack.append(node.left)
+        elif node.right and node.right not in visited:
+            stack.append(node.right)
+        else:
+            stack.pop()
+            visited.add(node)
+            left_height = heights.get(node.left, 0)
+            right_height = heights.get(node.right, 0)
+            if abs(left_height - right_height) > 1:
+                return False
+
+            heights[node] = max(left_height, right_height) + 1
+
+    return True
 
 
 def test_is_balanced():
