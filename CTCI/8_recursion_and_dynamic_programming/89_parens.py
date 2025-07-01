@@ -3,10 +3,10 @@
 #         return [""]
 #     result = set()
 #     for i in range(n):
-#         lefts = combinations(i)
-#         rights = combinations(n - 1 - i)
-#         for left in lefts:
-#             for right in rights:
+#         insides = combinations(i)
+#         outsides = combinations(n - 1 - i)
+#         for inside in insides:
+#             for outside in outsides:
 #                 result.add(f'({left}){right}')
 
 #     return list(result)
