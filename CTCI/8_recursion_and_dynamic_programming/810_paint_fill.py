@@ -10,7 +10,6 @@ image = [
 
 def paint_fill(image, r, c, new_color, old_color = None):
     if (r < 0
-        or r < 0
         or r >= len(image)
         or c >= len(image[0])
         or image[r][c] == new_color):
